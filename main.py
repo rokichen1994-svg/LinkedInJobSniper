@@ -36,7 +36,7 @@ RESULT_LIMIT = 10
 HOURS_OLD = 24
 PROXY_URL = os.getenv("PROXY_URL", None)
 RESUME = os.getenv("RESUME_TEXT", "")
-API_KEY = os.getenv("API_KEY")
+API_KEY = os.getenv("OPENAI_API_KEY")
 BASE_URL = os.getenv("API_BASE")
 
 # Define the output data structure from AI
