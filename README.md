@@ -69,7 +69,6 @@ Go to: `Settings` -> `Secrets and variables` -> `Actions` -> `New repository sec
 | `EMAIL_RECEIVER` | ✅ | Email address to receive the report. | `me@gmail.com` |
 | `PROXY_URL` | ✅ | HTTP Proxy for scraping (Crucial for LinkedIn). | `http://user:pass@host:port` |
 | `RESUME_CONTENT` | ✅ | Copy & Paste your entire resume text here. | `Name: Tao... Experience: ...` |
-| `USER_NAME` | ❌ | Your name (for email footer watermark). | `Tao` |
 
 > **⚠️ Note on Proxies**: LinkedIn has strict anti-bot measures. A high-quality **Residential Proxy** (e.g., IPRoyal, ThorData, Smartproxy) is highly recommended. Set the `PROXY_URL` format strictly as `http://user:pass@host:port`.
 
