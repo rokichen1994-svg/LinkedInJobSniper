@@ -35,6 +35,7 @@ LOCATION = "Tokyo, Japan"
 RESULT_LIMIT = 10
 HOURS_OLD = 24
 PROXY_URL = os.getenv("PROXY_URL", None)
+RESUME = os.getenv("RESUME_TEXT", "")
 
 # Define the output data structure from AI
 class JobEvaluation(BaseModel):
@@ -123,7 +124,8 @@ def load_resume_from_file():
         print(f"❌ Error reading resume file: {e}")
         return ""
 
-RESUME = load_resume_from_file()
+if RESUME is None:
+    RESUME = load_resume_from_file()
 
 # web clawling functions
 def fetch_missing_description(url: str, proxies: dict = None) -> str:
