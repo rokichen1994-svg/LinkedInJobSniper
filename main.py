@@ -93,6 +93,8 @@ prompt_template = ChatPromptTemplate.from_messages([
     """)
 ])
 
+print(system_template)
+
 # Chain
 evaluation_chain = prompt_template | structured_llm
 
