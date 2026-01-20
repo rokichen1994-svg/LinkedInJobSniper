@@ -31,13 +31,14 @@ load_dotenv()
 
 # Configuration
 SEARCH_TERM = "Software Engineer (Python, Java)"
-LOCATION = "Tokyo, Japan"
-RESULT_LIMIT = 10
+LOCATIONS = ["Tokyo, Japan", "Shanghai, China", "Shenzhen, China", "Singapore"]
+RESULT_LIMIT = 15
 HOURS_OLD = 24
 PROXY_URL = os.getenv("PROXY_URL", None)
 RESUME = os.getenv("RESUME_TEXT", "")
 API_KEY = os.getenv("OPENAI_API_KEY")
 BASE_URL = os.getenv("API_BASE")
+CRITERIA = os.getenv("CRITERIA", "")
 
 # Define the output data structure from AI
 class JobEvaluation(BaseModel):
@@ -71,11 +72,10 @@ Return a score by the following criteria and also give a concise, one-sentence r
 
 [Criteria]
 1. Skill Match (50%): How well do the required skills and technologies in the job description align with those listed on the resume? (Programming Languages, Frameworks, Tools, etc,)
-2. Experience Relevance (Mandatory): The least working years experience in job description should at most 3 years. If the experience requirement is higher than 3 years, give a very low score.
-3. If the job description emphasizes AI related skills, give extra points.
-4. International public listed companies are preferred, give extra points.
-5. Python is better than Java for our candidate, give extra points if Python is required or mentioned.
 """
+
+system_template += CRITERIA
+
 
 # Prompt template
 prompt_template = ChatPromptTemplate.from_messages([
@@ -190,14 +190,14 @@ def fetch_missing_description(url: str, proxies: dict = None) -> str:
         return ""
 
 # scrape jobs
-def get_jobs_data():
+def get_jobs_data(location: str) -> pd.DataFrame:
     """
     Scrape job listings by JobSpy.
 
     Add Retry logic if needed.
     """
     proxies = [PROXY_URL] if PROXY_URL else None
-    print(f"🕵️  CareerScout is searching for '{SEARCH_TERM}' in '{LOCATION}'...")
+    print(f"🕵️  CareerScout is searching for '{SEARCH_TERM}' in '{location}'...")
     print(f"🔌  Proxy: {proxies[0] if proxies else 'None'}")
 
     MAX_RETRIES = 5
@@ -208,7 +208,7 @@ def get_jobs_data():
             jobs = scrape_jobs(
                 site_name=["linkedin"],
                 search_term=SEARCH_TERM,
-                location=LOCATION,
+                location=location,
                 result_wanted=RESULT_LIMIT,
                 hours_old=HOURS_OLD,
                 proxies=proxies
@@ -318,7 +318,9 @@ def send_email(top_jobs: List[dict]):
 
 def main():
     # 1. Scraping
-    df = get_jobs_data()
+    df = pd.DataFrame()
+    for location in LOCATIONS:
+        df = pd.concat([df,get_jobs_data(location)], ignore_index=True, sort=False)
     if df.empty:
         return
 
@@ -360,9 +362,9 @@ def main():
             })
         # 3. Sorting & Sending
         scored_jobs.sort(key=lambda x: x['score'], reverse=True)
-        top_10 = scored_jobs[:10]
+        top_15 = scored_jobs[:15]
 
-    send_email(top_10)
+    send_email(top_15)
 
 if __name__ == "__main__":
     main()
