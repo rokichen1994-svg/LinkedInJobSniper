@@ -52,7 +52,7 @@ class JobEvaluation(BaseModel):
 
 # AI model
 llm = ChatOpenAI(
-    model_name="gemini-3-pro-preview",
+    model_name="gemini-3-flash-preview",
     temperature=0,
     api_key=API_KEY,
     base_url=BASE_URL,
@@ -353,7 +353,7 @@ def main():
         print()
         print(f"   📝 '{title}' scored {evaluation['score']}: {evaluation['reason']}")
 
-        if evaluation['score'] >= 60:  # 阈值过滤
+        if evaluation['score'] >=50:  # 阈值过滤
             scored_jobs.append({
                 "title": title,
                 "company": row.get('company'),
