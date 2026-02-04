@@ -30,8 +30,8 @@ from pypdf import PdfReader
 load_dotenv()
 
 # Configuration
-SEARCH_TERM = "Software Engineer (Python, Java)"
-LOCATIONS = ["Tokyo, Japan", "Shanghai, China", "Hongkong, China"]
+SEARCH_TERM = "Student Support"
+LOCATIONS = ["Sydney, Australia"]
 RESULT_LIMIT = 15
 HOURS_OLD = 24
 PROXY_URL = os.getenv("PROXY_URL", None)
