@@ -52,10 +52,10 @@ class JobEvaluation(BaseModel):
 
 # AI model
 llm = ChatOpenAI(
-    model_name="gpt-4o",
+    model_name="gemini-1.5-flash", 
     temperature=0,
     api_key=API_KEY,
-    base_url=BASE_URL,
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai"
 )
 
 
